@@ -1,0 +1,39 @@
+import requests
+from bs4 import BeautifulSoup
+u = ["https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/bt",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/che",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/cy",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/ce",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/cse",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/ee",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/ece",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/hss",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/mat",
+     "https://wsdc.nitw.ac.in/facultynew/dept/faculty_profiles/me"]
+dept_name = ["Biotechnology",
+             "Chemical Engineering",
+             "Chemistry",
+             "Civil Engineering",
+             "Computer Science & Engineering",
+             "Electrical Engineering",
+             "Electronics & Communication Engineering",
+             "Humanities & Social Science",
+             "Mathematics",
+             "Mechanical Engineering"]
+i = 0
+file = open("Nit_Warangal.txt",'a')
+file.write("************************Nit_Warangal************************")
+
+for url in u:
+    r = requests.get(url)
+    html = r.content
+    soup = BeautifulSoup(html,'html.parser')
+    faculty_profiles = soup.find_all(class_="grid-item")
+    file.write("\n-------------------"+dept_name[i]+"------------------\n")
+    for info in faculty_profiles:
+        detail = info.find(class_ = "rightm")
+        for elem in detail.stripped_strings:
+            file.write(elem)
+            file.write("\n")
+        file.write("\n\n")
+    i=i+1
